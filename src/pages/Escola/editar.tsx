@@ -14,7 +14,7 @@ interface FormData {
 }
 
 const EscolaEditar: React.FC = ({ props }: any) => {
-    const { id } = useParams<any>();
+  const { id } = useParams<any>();
   const formRef = useRef<FormHandles>(null);
 
   const submeter: SubmitHandler<FormData> = (data) => {
@@ -26,18 +26,17 @@ const EscolaEditar: React.FC = ({ props }: any) => {
   };
 
   const inicio = () => {
-      obtemDadosEscola();
-  }
+    obtemDadosEscola();
+  };
 
   const obtemDadosEscola = () => {
-      api.get("/Escola/get", { params: { id } })
-        .then(retornoObtemDadosEscola);
-  }
+    api.get("/Escola/get", { params: { id } }).then(retornoObtemDadosEscola);
+  };
 
   const retornoObtemDadosEscola = (resposta: AxiosResponse<any>) => {
     console.log(resposta.data);
     formRef.current?.setData(resposta.data);
-  }
+  };
 
   useEffect(inicio, []);
 
