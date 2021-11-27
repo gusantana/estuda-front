@@ -18,6 +18,11 @@ const Home: React.FC = () => {
           <div className="card-footer">Alunos</div>
         </Link>
 
+        <Link to="/Turma/" className="card">
+          <div className="card-body">Turmas</div>
+          <div className="card-footer">Turmas</div>
+        </Link>
+
       </div>
     </div>
   );
