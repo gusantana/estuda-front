@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import api from "../api";
 // import { Container } from './styles';
 
-interface Escola {
+interface EscolaProps {
   id: string,
   nome: string,
   endereco: string
 }
 
 const Escola: React.FC = () => {
-  const [escolas, setEscolas] = useState<Escola[]>([]);
+  const [escolas, setEscolas] = useState<EscolaProps[]>([]);
 
   const buscaEscolas = () => {
     api.get("/Escola/").then(retornoBuscaEscolas);
@@ -52,14 +52,16 @@ const Escola: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {escolas.map((escola: Escola) => (
+              {escolas.map((escola: EscolaProps) => (
                 <tr key={escola.id}>
                   <td>{escola.nome}</td>
                   <td className="text-center">
                     <Link
                       to={`/Escola/editar/${escola.id}`}
                       className="btn btn-secondary btn-sm"
-                    >Editar</Link>
+                    >
+                      Editar
+                    </Link>
                   </td>
                 </tr>
               ))}
