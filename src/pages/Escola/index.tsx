@@ -4,11 +4,17 @@ import { Link } from "react-router-dom";
 import api from "../api";
 // import { Container } from './styles';
 
+interface Escola {
+  id: string,
+  nome: string,
+  endereco: string
+}
+
 const Escola: React.FC = () => {
-  const [escolas, setEscolas] = useState<any>({});
+  const [escolas, setEscolas] = useState<Escola[]>([]);
 
   const buscaEscolas = () => {
-    api.get("/Escola/?id=1").then(retornoBuscaEscolas);
+    api.get("/Escola/").then(retornoBuscaEscolas);
   };
 
   const retornoBuscaEscolas = (resposta: any) => {
@@ -26,7 +32,10 @@ const Escola: React.FC = () => {
     <>
       <div className="row mb-3">
         <div className="col-auto">
-          <Link to="/Escola/adicionar" className="btn btn-primary">
+          <Link to="/Home/" className="btn btn-outline-secondary">
+            Voltar
+          </Link>
+          <Link to="/Escola/adicionar" className="btn btn-primary ms-3">
             Nova Escola
           </Link>
         </div>
@@ -43,17 +52,17 @@ const Escola: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {/* {escolas.map((escola: any) => (
-                <tr></tr>
-              ))} */}
-              <tr>
-                <td>{escolas.nome}</td>
-                <td className="text-center">
-                  <Link to={"#"} className="btn btn-secondary btn-sm">
-                    {escolas.nome}
-                  </Link>
-                </td>
-              </tr>
+              {escolas.map((escola: Escola) => (
+                <tr key={escola.id}>
+                  <td>{escola.nome}</td>
+                  <td className="text-center">
+                    <Link
+                      to={`/Escola/editar/${escola.id}`}
+                      className="btn btn-secondary btn-sm"
+                    >Editar</Link>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
