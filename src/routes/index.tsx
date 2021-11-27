@@ -6,11 +6,15 @@ import Turma from "../pages/Turma";
 import Aluno from "./../pages/Aluno/index";
 import Escola from "./../pages/Escola/index";
 import EscolaAdicionar from './../pages/Escola/adicionar';
+import EscolaEditar from "../pages/Escola/editar";
 
 const Rotas: React.FC = () => (
   <BrowserRouter>
     <Layout>
       <Switch>
+        <Route path="/Escola/editar/:id">
+          <EscolaEditar />
+        </Route>
         <Route path="/Escola/adicionar">
           <EscolaAdicionar />
         </Route>
