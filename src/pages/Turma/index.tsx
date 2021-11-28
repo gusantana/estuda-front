@@ -29,6 +29,19 @@ const Turma: React.FC = () => {
   const [turmas, setTurmas] = useState<TurmaProps[]>([]);
   const [escolas, setEscolas] = useState<any>([]);
 
+  const inicio = () => {
+    buscaEscolas();
+  };
+
+  const buscaEscolas = () => {
+    api.get("/Escola").then(retornoBuscaEscolas);
+  };
+
+  const retornoBuscaEscolas = (resposta: AxiosResponse<EscolaProps[]>) => {
+    setEscolas(resposta.data);
+  };
+
+
   const buscaTumasDeEscola: SubmitHandler<any> = (data) => {
     // console.log(data);
     api
@@ -40,22 +53,7 @@ const Turma: React.FC = () => {
     // console.log(retorno);
     setTurmas(resposta.data);
   };
-
-  const buscaEscolas = () => {
-    api.get("/Escola").then(retornoBuscaEscolas);
-  };
-
-  const retornoBuscaEscolas = (resposta: AxiosResponse<EscolaProps[]>) => {
-    const opcoesEscolas = resposta.data.map((escola) => ({
-      value: escola.id,
-      label: escola.nome,
-    }));
-    setEscolas(opcoesEscolas);
-  };
-
-  const inicio = () => {
-    buscaEscolas();
-  };
+  
 
   useEffect(inicio, []);
 
@@ -80,7 +78,11 @@ const Turma: React.FC = () => {
               <label htmlFor="escola" className="form-label">
                 Escola
               </label>
-              <Select name="id_escola" id="escola" options={escolas} />
+              <Select name="id_escola" id="id_escola" className="form-select">
+                {escolas.map((escola: any) => (
+                  <option key={escola.id} value={escola.id}>{escola.nome}</option>
+                ))}
+              </Select>
             </div>
 
             <div>
