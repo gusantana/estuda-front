@@ -3,10 +3,12 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Layout from "../components/_layout";
 import Home from "../pages/Home";
 import Turma from "../pages/Turma";
+import TurmaAdicionar from "../pages/Turma/adicionar";
 import Aluno from "./../pages/Aluno/index";
 import Escola from "./../pages/Escola/index";
 import EscolaAdicionar from './../pages/Escola/adicionar';
 import EscolaEditar from "../pages/Escola/editar";
+import TurmaEditar from './../pages/Turma/editar';
 
 const Rotas: React.FC = () => (
   <BrowserRouter>
@@ -23,6 +25,12 @@ const Rotas: React.FC = () => (
         </Route>
         <Route path="/Aluno">
           <Aluno />
+        </Route>
+        <Route path="/Turma/editar/:id">
+          <TurmaEditar />
+        </Route>
+        <Route path="/Turma/adicionar">
+          <TurmaAdicionar />
         </Route>
         <Route path="/Turma">
           <Turma />
