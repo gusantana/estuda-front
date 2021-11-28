@@ -9,6 +9,8 @@ import Escola from "./../pages/Escola/index";
 import EscolaAdicionar from './../pages/Escola/adicionar';
 import EscolaEditar from "../pages/Escola/editar";
 import TurmaEditar from './../pages/Turma/editar';
+import AlunoEditar from "../pages/Aluno/editar";
+import AlunoAdicionar from "../pages/Aluno/adicionar";
 
 const Rotas: React.FC = () => (
   <BrowserRouter>
@@ -22,6 +24,12 @@ const Rotas: React.FC = () => (
         </Route>
         <Route path="/Escola">
           <Escola />
+        </Route>
+        <Route path="/Aluno/editar/:id">
+          <AlunoEditar />
+        </Route>
+        <Route path="/Aluno/adicionar">
+          <AlunoAdicionar />
         </Route>
         <Route path="/Aluno">
           <Aluno />
