@@ -17,7 +17,7 @@ const Input: React.FC<InputProps> = ({ name, ...rest }: InputProps) => {
       name: fieldName,
       ref: inputRef,
       getValue: (ref) => {
-        return ref.current?.value;
+        return ref.current?.value == "" ? null : ref.current?.value;
       },
       setValue: (ref, value) => {
         ref.current.value = value;
