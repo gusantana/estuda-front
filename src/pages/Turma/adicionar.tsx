@@ -41,7 +41,7 @@ const TurmaAdicionar: React.FC = ({ props }: any) => {
       value: escola.id,
       label: escola.nome,
     }));
-    setEscolas(opcoesEscolas);
+    setEscolas(resposta.data);
   };
 
   const inicio = () => {
@@ -70,7 +70,11 @@ const TurmaAdicionar: React.FC = ({ props }: any) => {
               <label htmlFor="id_escola" className="form-label">
                 Escola
               </label>
-              <Select name="id_escola" id="id_escola" options={escolas} />
+              <Select name="id_escola" id="id_escola">
+                {escolas.map((escola: any) => (
+                  <option value={escola.id}>{escola.nome}</option>
+                ))}
+              </Select>
             </div>
 
             <div className="mb-3">
@@ -91,11 +95,11 @@ const TurmaAdicionar: React.FC = ({ props }: any) => {
               <label htmlFor="nivel_ensino" className="form-label">
                 Nível de Ensino
               </label>
-              <Select
-                name="nivel_ensino"
-                id="nivel_ensino"
-                options={niveisEnsino}
-              />
+              <Select name="nivel_ensino" id="nivel_ensino">
+                {niveisEnsino.map((nivel: any) => (
+                  <option value={nivel.value}>{nivel.label}</option>
+                ))}
+              </Select>
             </div>
 
             <div className="mb-3">

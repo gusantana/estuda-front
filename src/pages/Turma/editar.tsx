@@ -3,7 +3,7 @@ import { Form } from "@unform/web";
 import { AxiosResponse } from "axios";
 import React, { useEffect, useRef, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 import api from "../api";
@@ -14,15 +14,43 @@ interface EscolaProps {
 }
 
 const TurmaEditar: React.FC = ({ props }: any) => {
-  const { id } = useParams();
+  const { id } = useParams<any>();
   const formRef = useRef<FormHandles>(null);
 
   const [turma, setTurma] = useState<any>([]);
+  const [escolas, setEscolas] = useState<any>([]);
+  const [escolaEscolhida, setEscolaEscolhida] = useState<any>({});
 
   const [niveisEnsino, setNiveisEnsino] = useState<any>([
     { value: "Fundamental", label: "Fundamental" },
     { value: "Médio", label: "Médio" },
   ]);
+
+  const inicio = () => {
+    buscaEscolas();
+  };
+
+  const buscaEscolas = () => {
+    api.get("/Escola").then(retornoBuscaEscolas);
+  };
+
+  const retornoBuscaEscolas = (resposta: AxiosResponse<EscolaProps[]>) => {
+    // const opcoesEscolas = resposta.data.map((escola) => ({
+    //   value: escola.id,
+    //   label: escola.nome,
+    // }));
+
+    setEscolas(resposta.data);
+  };
+
+  const buscaTurma = () => {
+    api.get("/Turma", { params: { id: id } }).then(retornoBuscaTurma);
+  };
+
+  const retornoBuscaTurma = (resposta: any) => {
+    setTurma(resposta.data);
+    formRef.current?.setData(resposta.data);
+  };
 
   const submeter: SubmitHandler<any> = (data) => {
     api.post("/Turma/salvar", data).then(retornoSubmeter);
@@ -32,23 +60,8 @@ const TurmaEditar: React.FC = ({ props }: any) => {
     formRef.current?.setData(resposta.data);
   };
 
-  const buscaTurma = () => {
-    api.get("/Escola").then(retornoBuscaEscolas);
-  };
-
-  const retornoBuscaEscolas = (resposta: AxiosResponse<EscolaProps[]>) => {
-    const opcoesEscolas = resposta.data.map((escola) => ({
-      value: escola.id,
-      label: escola.nome,
-    }));
-    setEscolas(opcoesEscolas);
-  };
-
-  const inicio = () => {
-    buscaEscolas();
-  };
-
   useEffect(inicio, []);
+  useEffect(buscaTurma, [escolas]);
 
   return (
     <>
@@ -70,7 +83,15 @@ const TurmaEditar: React.FC = ({ props }: any) => {
               <label htmlFor="id_escola" className="form-label">
                 Escola
               </label>
-              <Select name="id_escola" id="id_escola" options={escolas} />
+              <Select
+                name="id_escola"
+                id="id_escola"
+                className="form-select"
+              >
+                {escolas.map((escola: any) => (
+                  <option key={escola.id} value={escola.id}>{escola.nome}</option>
+                ))}
+              </Select>
             </div>
 
             <div className="mb-3">
@@ -94,8 +115,14 @@ const TurmaEditar: React.FC = ({ props }: any) => {
               <Select
                 name="nivel_ensino"
                 id="nivel_ensino"
-                options={niveisEnsino}
-              />
+                className="form-select"
+              >
+                {niveisEnsino.map((nivel: any) => (
+                  <option key={nivel.value} value={nivel.value}>
+                    {nivel.label}
+                  </option>
+                ))}
+              </Select>
             </div>
 
             <div className="mb-3">
