@@ -48,6 +48,9 @@ const Aluno: React.FC = ({ props }: any) => {
           <Link to="/Home/" className="btn btn-outline-secondary">
             Voltar
           </Link>
+          <Link to="/Aluno/adicionar/" className="btn btn-primary ms-3">
+            Adicionar
+          </Link>
         </div>
       </div>
 
