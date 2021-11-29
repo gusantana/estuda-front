@@ -5,26 +5,41 @@ import api from "../api";
 // import { Container } from './styles';
 
 interface EscolaProps {
-  id: string,
-  nome: string,
-  endereco: string
+  id: string;
+  nome: string;
+  endereco: string;
+  quant_alunos: string;
 }
 
 const Escola: React.FC = () => {
   const [escolas, setEscolas] = useState<EscolaProps[]>([]);
 
-  const buscaEscolas = () => {
-    api.get("/Escola/").then(retornoBuscaEscolas);
-  };
-
-  const retornoBuscaEscolas = (resposta: any) => {
-    // console.log(resposta.data);
-    setEscolas(resposta.data);
-  };
-
   const inicio = () => {
     buscaEscolas();
   };
+
+  const buscaEscolas = () => {
+    api.get("/Escola/getComQuantidadeAlunos").then(retornoBuscaEscolas);
+  };
+
+  const retornoBuscaEscolas = (resposta: any) => {
+    console.log(resposta.data);
+    setEscolas(resposta.data);
+  };
+
+  const confirmaExclusaoEscola = (id: any) => {
+    if (window.confirm("Deseja excluir a escola selecionada?")) {
+      api.post("/Escola/excluir", { id: id }).then(retornoExclusaoEscola).catch(erroRetornoExclusaoEscola);
+    }
+  };
+
+  const retornoExclusaoEscola = (resposta: any) => {
+    inicio();
+  }
+
+  const erroRetornoExclusaoEscola = (resposta: any) => {
+    console.log(resposta);
+  }
 
   useEffect(inicio, []);
 
@@ -48,6 +63,7 @@ const Escola: React.FC = () => {
             <thead>
               <tr>
                 <th>Nome</th>
+                <th className="text-center">Alunos Cadastrados</th>
                 <th className="text-center">Ações</th>
               </tr>
             </thead>
@@ -55,6 +71,7 @@ const Escola: React.FC = () => {
               {escolas.map((escola: EscolaProps) => (
                 <tr key={escola.id}>
                   <td>{escola.nome}</td>
+                  <td className="text-center">{escola.quant_alunos}</td>
                   <td className="text-center">
                     <Link
                       to={`/Escola/editar/${escola.id}`}
@@ -62,6 +79,16 @@ const Escola: React.FC = () => {
                     >
                       Editar
                     </Link>
+
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm ms-3"
+                      onClick={() => {
+                        confirmaExclusaoEscola(escola.id);
+                      }}
+                    >
+                      Excluir
+                    </button>
                   </td>
                 </tr>
               ))}
