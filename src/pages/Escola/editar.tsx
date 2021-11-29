@@ -23,6 +23,7 @@ const EscolaEditar: React.FC = ({ props }: any) => {
 
   const retornoSubmeter = (resposta: any) => {
     formRef.current?.setData(resposta.data);
+    alert("Dados alterados com sucesso");
   };
 
   const inicio = () => {
@@ -34,7 +35,6 @@ const EscolaEditar: React.FC = ({ props }: any) => {
   };
 
   const retornoObtemDadosEscola = (resposta: AxiosResponse<any>) => {
-    console.log(resposta.data);
     formRef.current?.setData(resposta.data);
   };
 
