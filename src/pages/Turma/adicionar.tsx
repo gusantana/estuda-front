@@ -2,8 +2,7 @@ import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import { AxiosResponse } from "axios";
 import React, { useEffect, useRef, useState } from "react";
-
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 import api from "../api";
@@ -15,7 +14,7 @@ interface EscolaProps {
 
 const TurmaAdicionar: React.FC = ({ props }: any) => {
   const formRef = useRef<FormHandles>(null);
-
+  let history = useHistory();
   const [escolas, setEscolas] = useState<any>([]);
   const [niveisEnsino, setNiveisEnsino] = useState<any>([
     { value: "Fundamental", label: "Fundamental" },
@@ -30,6 +29,8 @@ const TurmaAdicionar: React.FC = ({ props }: any) => {
   const retornoSubmeter = (resposta: any) => {
     console.log(resposta.data);
     formRef.current?.setData(resposta.data);
+    alert("Turma Adicionada com sucesso!");
+    history.goBack();
   };
 
   const buscaEscolas = () => {
@@ -62,15 +63,15 @@ const TurmaAdicionar: React.FC = ({ props }: any) => {
 
       <div className="card">
         <h6 className="card-header">Nova Turma</h6>
-        <div className="card-body">
-          <Form ref={formRef} onSubmit={submeter}>
+        <Form ref={formRef} onSubmit={submeter}>
+          <div className="card-body ">
             <Input type="hidden" value="" name="id" />
 
             <div className="mb-3">
               <label htmlFor="id_escola" className="form-label">
                 Escola
               </label>
-              <Select name="id_escola" id="id_escola">
+              <Select className="form-select" name="id_escola" id="id_escola">
                 {escolas.map((escola: any) => (
                   <option value={escola.id}>{escola.nome}</option>
                 ))}
@@ -88,14 +89,26 @@ const TurmaAdicionar: React.FC = ({ props }: any) => {
               <label htmlFor="ano" className="form-label">
                 Ano
               </label>
-              <Input name="ano" id="ano" className="form-control" />
+              <Input
+                type="number"
+                inputMode="numeric"
+                max="2022"
+                max-length="4"
+                name="ano"
+                id="ano"
+                className="form-control"
+              />
             </div>
 
             <div className="mb-3 col-auto">
               <label htmlFor="nivel_ensino" className="form-label">
                 Nível de Ensino
               </label>
-              <Select name="nivel_ensino" id="nivel_ensino">
+              <Select
+                className="form-select"
+                name="nivel_ensino"
+                id="nivel_ensino"
+              >
                 {niveisEnsino.map((nivel: any) => (
                   <option value={nivel.value}>{nivel.label}</option>
                 ))}
@@ -106,14 +119,22 @@ const TurmaAdicionar: React.FC = ({ props }: any) => {
               <label htmlFor="turno" className="form-label">
                 Turno
               </label>
-              <Input name="turno" id="turno" className="form-control" />
+              <Select 
+              name="turno" 
+              id="turno" 
+              className="form-select">
+                <option value="Matutino">Matutino</option>
+                <option value="Vespertino">Vespertino</option>
+                <option value="Noturno">Noturno</option>
+              </Select>
             </div>
-
+          </div>
+          <div className="card-footer d-flex justify-content-end ">
             <button type="submit" className="btn btn-primary">
               Salvar
             </button>
-          </Form>
-        </div>
+          </div>
+        </Form>
       </div>
     </>
   );
