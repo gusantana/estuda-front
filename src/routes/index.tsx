@@ -11,6 +11,7 @@ import EscolaEditar from "../pages/Escola/editar";
 import TurmaEditar from './../pages/Turma/editar';
 import AlunoEditar from "../pages/Aluno/editar";
 import AlunoAdicionar from "../pages/Aluno/adicionar";
+import AlunosDaTurma from './../pages/Turma/AlunosDaTurma';
 
 const Rotas: React.FC = () => (
   <BrowserRouter>
@@ -33,6 +34,9 @@ const Rotas: React.FC = () => (
         </Route>
         <Route path="/Aluno">
           <Aluno />
+        </Route>
+        <Route path="/Turma/verAlunos/:id_turma">
+          <AlunosDaTurma />
         </Route>
         <Route path="/Turma/editar/:id">
           <TurmaEditar />
