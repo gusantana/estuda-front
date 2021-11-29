@@ -1,21 +1,11 @@
-import { FormHandles, SubmitHandler } from "@unform/core";
-import { Form } from "@unform/web";
+import { FormHandles } from "@unform/core";
 import { AxiosResponse } from "axios";
 import React, { useEffect, useRef, useState } from "react";
 
 import { Link } from "react-router-dom";
-import Input from "../../components/Input";
-import Select from "../../components/Select";
 import api from "../api";
 
-interface EscolaProps {
-  id: string;
-  nome: string;
-}
-
 const Aluno: React.FC = ({ props }: any) => {
-  const formRef = useRef<FormHandles>(null);
-
   const [alunos, setAlunos] = useState<any>([]);
 
   const inicio = () => {
@@ -30,14 +20,19 @@ const Aluno: React.FC = ({ props }: any) => {
     setAlunos(resposta.data);
   };
 
-  const submeter: SubmitHandler<any> = (data) => {
-    console.log(data);
-    api.post("/Aluno/salvar", data).then(retornoSubmeter);
-  };
+  const confirmaExclusaoAluno = (id: any) => {
+    if (window.confirm("Deseja excluir o aluno selecionado?")) {
+      api.post("/Aluno/excluir", {id: id}).then(retornoExclusao).catch(erroRetornoExclusao);
+    }
+  }
 
-  const retornoSubmeter = (resposta: any) => {
-    formRef.current?.setData(resposta.data);
-  };
+  const retornoExclusao = (resposta: any) => {
+    inicio();
+  }
+
+  const erroRetornoExclusao = (resposta: any) => {
+    console.log(resposta);
+  }
 
   useEffect(inicio, []);
 
@@ -76,6 +71,16 @@ const Aluno: React.FC = ({ props }: any) => {
                   >
                     Editar
                   </Link>
+
+                  <button
+                    type="button"
+                    className="btn btn-danger btn-sm ms-3"
+                    onClick={() => {
+                      confirmaExclusaoAluno(aluno.id);
+                    }}
+                  >
+                    Excluir
+                  </button>
                 </td>
               </tr>
             ))}
