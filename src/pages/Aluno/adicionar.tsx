@@ -1,7 +1,7 @@
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import { AxiosResponse } from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { Link, useParams } from "react-router-dom";
 import Input from "../../components/Input";
@@ -16,6 +16,7 @@ const AlunoAdicionar: React.FC = () => {
   };
 
   const retornoSubmeter = (resposta: any) => {
+    alert("Aluno inserido com sucesso");
     formRef.current?.setData(resposta.data);
   };
 
