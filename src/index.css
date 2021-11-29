@@ -2,4 +2,23 @@
 
     body {
         background-color: #eef0f8;
+        min-height: 100vh;
     }
+
+    .card-principal {
+        max-width: 200px;
+    }
+
+    .f-1{
+        flex: 1;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    #footer{
+        border-top: 1px solid #bfbfbf;
+        
+    }
+    
