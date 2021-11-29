@@ -4,10 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import api from "../api";
-// import { Container } from './styles';
 import { AxiosResponse } from "axios";
 import Select from "../../components/Select";
-import { Props } from "react-select/dist/declarations/src/Select";
 
 interface TurmaProps {
   id: string;
@@ -39,8 +37,8 @@ const Turma: React.FC = () => {
 
   const retornoBuscaEscolas = (resposta: AxiosResponse<EscolaProps[]>) => {
     setEscolas(resposta.data);
+    formRef.current?.submitForm();
   };
-
 
   const buscaTumasDeEscola: SubmitHandler<any> = (data) => {
     // console.log(data);
@@ -53,7 +51,23 @@ const Turma: React.FC = () => {
     // console.log(retorno);
     setTurmas(resposta.data);
   };
-  
+
+  const confirmaExclusaoTurma = (id: any) => {
+    if (window.confirm("Deseja excluir a turma selecionada?")) {
+      api
+        .post("/Turma/excluir", { id: id })
+        .then(retornoExclusao)
+        .catch(erroRetornoExclusao);
+    }
+  }
+
+  const retornoExclusao = (resposta: any) => {
+    inicio();
+  };
+
+  const erroRetornoExclusao = (resposta: any) => {
+    console.log(resposta);
+  }
 
   useEffect(inicio, []);
 
@@ -78,40 +92,54 @@ const Turma: React.FC = () => {
               <label htmlFor="escola" className="form-label">
                 Escola
               </label>
-              <Select name="id_escola" id="id_escola" className="form-select">
+              <Select
+                name="id_escola"
+                id="id_escola"
+                className="form-select"
+                onChange={() => {
+                  formRef.current?.submitForm();
+                }}
+              >
                 {escolas.map((escola: any) => (
-                  <option key={escola.id} value={escola.id}>{escola.nome}</option>
+                  <option key={escola.id} value={escola.id}>
+                    {escola.nome}
+                  </option>
                 ))}
               </Select>
             </div>
-
-            <div>
-              <button type="submit" className="btn btn-info text-light">
-                Buscar
-              </button>
-            </div>
           </Form>
         </div>
-        <table className="table table-striped table-hover mb-0">
+        <table className="table table-striped table-hover mb-0 ">
           <thead>
             <tr>
               <th>Série</th>
               <th>Nível</th>
-              <th className="text-center">Ações</th>
+              <th className="text-center" style={{ maxWidth: "10%" }}>
+                Ações
+              </th>
             </tr>
           </thead>
           <tbody>
             {turmas.map((turma: TurmaProps) => (
               <tr key={turma.id}>
-                <td>{turma.serie}</td>
+                <td className=" ml-3">{turma.serie}</td>
                 <td>{turma.nivel_ensino}</td>
-                <td className="text-center">
+                <td className=" text-center">
                   <Link
                     to={`/Turma/editar/${turma.id}`}
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-secondary btn-sm me-3"
                   >
                     Editar
                   </Link>
+                  <Link
+                    to={`/Turma/verAlunos/${turma.id}`}
+                    className="btn btn-info text-light btn-sm me-3"
+                  >
+                    Ver Alunos
+                  </Link>
+                  <button type="button" className="btn btn-danger btn-sm" onClick={() => {confirmaExclusaoTurma(turma.id)}}>
+                    Excluir
+                  </button>
                 </td>
               </tr>
             ))}
