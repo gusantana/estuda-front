@@ -74,7 +74,7 @@ const TurmaEditar: React.FC = ({ props }: any) => {
       </div>
 
       <div className="card">
-        <h6 className="card-header">Nova Turma</h6>
+        <h6 className="card-header">Editar Turma</h6>
         <div className="card-body">
           <Form ref={formRef} onSubmit={submeter}>
             <Input type="hidden" name="id" />
