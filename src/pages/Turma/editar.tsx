@@ -129,7 +129,11 @@ const TurmaEditar: React.FC = ({ props }: any) => {
               <label htmlFor="turno" className="form-label">
                 Turno
               </label>
-              <Input name="turno" id="turno" className="form-control" />
+              <Select name="turno" id="turno" className="form-select">
+                <option value="Matutino">Matutino</option>
+                <option value="Vespertino">Vespertino</option>
+                <option value="Noturno">Noturno</option>
+              </Select>
             </div>
 
             <button type="submit" className="btn btn-primary">
